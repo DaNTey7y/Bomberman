@@ -4,30 +4,33 @@ import pygame
 class Player:
     def __init__(self):
         # Задаю параметры игрока
-        self.pos_x = 250
-        self.pos_y = 250
+        self.pos_x = 50
+        self.pos_y = 50
         self.color = (255, 0, 0)
         self.radius = 20
         self.speed = 2.5
 
-        self.walk_up = [pygame.transform.scale(pygame.image.load('images/pu0.png'), (44, 44)),
-                        pygame.transform.scale(pygame.image.load('images/pu1.png'), (44, 44)),
-                        pygame.transform.scale(pygame.image.load('images/pu0.png'), (44, 44)),
-                        pygame.transform.scale(pygame.image.load('images/pu2.png'), (44, 44))]
-        self.walk_down = [pygame.transform.scale(pygame.image.load('images/pd0.png'), (44, 44)),
-                          pygame.transform.scale(pygame.image.load('images/pd1.png'), (44, 44)),
-                          pygame.transform.scale(pygame.image.load('images/pd0.png'), (44, 44)),
-                          pygame.transform.scale(pygame.image.load('images/pd2.png'), (44, 44))]
-        self.walk_left = [pygame.transform.scale(pygame.image.load('images/pl0.png'), (44, 44)),
-                          pygame.transform.scale(pygame.image.load('images/pl1.png'), (44, 44)),
-                          pygame.transform.scale(pygame.image.load('images/pl0.png'), (44, 44)),
-                          pygame.transform.scale(pygame.image.load('images/pl2.png'), (44, 44))]
-        self.walk_right = [pygame.transform.scale(pygame.image.load('images/pr0.png'), (44, 44)),
-                           pygame.transform.scale(pygame.image.load('images/pr1.png'), (44, 44)),
-                           pygame.transform.scale(pygame.image.load('images/pr0.png'), (44, 44)),
-                           pygame.transform.scale(pygame.image.load('images/pr2.png'), (44, 44))]
+        self.walk_up = [pygame.transform.scale(pygame.image.load('images/pu0.png'), (50, 50)),
+                        pygame.transform.scale(pygame.image.load('images/pu1.png'), (50, 50)),
+                        pygame.transform.scale(pygame.image.load('images/pu0.png'), (50, 50)),
+                        pygame.transform.scale(pygame.image.load('images/pu2.png'), (50, 50))]
+        self.walk_down = [pygame.transform.scale(pygame.image.load('images/pd0.png'), (50, 50)),
+                          pygame.transform.scale(pygame.image.load('images/pd1.png'), (50, 50)),
+                          pygame.transform.scale(pygame.image.load('images/pd0.png'), (50, 50)),
+                          pygame.transform.scale(pygame.image.load('images/pd2.png'), (50, 50))]
+        self.walk_left = [pygame.transform.scale(pygame.image.load('images/pl0.png'), (50, 50)),
+                          pygame.transform.scale(pygame.image.load('images/pl1.png'), (50, 50)),
+                          pygame.transform.scale(pygame.image.load('images/pl0.png'), (50, 50)),
+                          pygame.transform.scale(pygame.image.load('images/pl2.png'), (50, 50))]
+        self.walk_right = [pygame.transform.scale(pygame.image.load('images/pr0.png'), (50, 50)),
+                           pygame.transform.scale(pygame.image.load('images/pr1.png'), (50, 50)),
+                           pygame.transform.scale(pygame.image.load('images/pr0.png'), (50, 50)),
+                           pygame.transform.scale(pygame.image.load('images/pr2.png'), (50, 50))]
         self.current_animation = self.walk_left
         self.anim_counter = 0
+
+        self.frame = None
+        self.rect = None
 
         self.alive = True
 
@@ -39,35 +42,50 @@ class Player:
     следующие четыре функции изменяют и возвращают 
     измененную позицию игрока
     """
-    def move_right(self):
+    def move_right(self, field):
         self.current_animation = self.walk_right
         self.anim_counter += 1
-        self.pos_x += self.speed
-        self.get_pos()
+        next_cell_0 = field.get_position((self.pos_x + 50, self.pos_y))
+        next_cell_1 = field.get_position((self.pos_x + 50, self.pos_y + 49))
+        if str(field.field[next_cell_0[1]][next_cell_0[0]]) not in ('1', '2') \
+                and str(field.field[next_cell_1[1]][next_cell_1[0]]) not in ('1', '2'):
+            self.pos_x += self.speed
 
-    def move_left(self):
+    def move_left(self, field):
         self.current_animation = self.walk_left
         self.anim_counter += 1
-        self.pos_x -= self.speed
-        self.get_pos()
+        next_cell_0 = field.get_position((self.pos_x - 1, self.pos_y))
+        next_cell_1 = field.get_position((self.pos_x - 1, self.pos_y + 49))
+        if str(field.field[next_cell_0[1]][next_cell_0[0]]) not in ('1', '2') \
+                and str(field.field[next_cell_1[1]][next_cell_1[0]]) not in ('1', '2'):
+            self.pos_x -= self.speed
 
-    def move_up(self):
+    def move_up(self, field):
         self.current_animation = self.walk_up
         self.anim_counter += 1
-        self.pos_y -= self.speed
-        self.get_pos()
+        next_cell_0 = field.get_position((self.pos_x, self.pos_y - 1))
+        next_cell_1 = field.get_position((self.pos_x + 49, self.pos_y - 1))
+        if str(field.field[next_cell_0[1]][next_cell_0[0]]) not in ('1', '2') \
+                and str(field.field[next_cell_1[1]][next_cell_1[0]]) not in ('1', '2'):
+            self.pos_y -= self.speed
 
-    def move_down(self):
+    def move_down(self, field):
         self.current_animation = self.walk_down
         self.anim_counter += 1
-        self.pos_y += self.speed
-        self.get_pos()
+        next_cell_0 = field.get_position((self.pos_x, self.pos_y + 50))
+        next_cell_1 = field.get_position((self.pos_x + 49, self.pos_y + 50))
+        if str(field.field[next_cell_0[1]][next_cell_0[0]]) not in ('1', '2') \
+                and str(field.field[next_cell_1[1]][next_cell_1[0]]) not in ('1', '2'):
+            self.pos_y += self.speed
 
     # обновляет состояние игрока
     def update(self):
-        if self.anim_counter >= 32:
+        if self.anim_counter >= 16:
             self.anim_counter = 0
 
+        self.frame = self.current_animation[self.anim_counter // 4]
+        self.rect = self.frame.get_rect()
+
     # рисует игрока
-    def draw(self, screen):
-        screen.blit(self.current_animation[self.anim_counter // 8], self.get_pos())
+    def draw(self, surface):
+        surface.blit(self.frame, self.get_pos())

@@ -1,5 +1,6 @@
 import pygame
 from player import Player
+from field import Field
 
 
 def update(objects):
@@ -7,16 +8,16 @@ def update(objects):
         obj.update()
 
 
-def draw(screen, objects):
-    screen.fill((255, 204, 0))
+def draw(surface, objects):
+    surface.fill((255, 204, 0))
     for obj in objects:
-        obj.draw(screen)
+        obj.draw(surface)
 
 
 if __name__ == '__main__':
     pygame.init()
     pygame.display.set_caption('Bomberman')
-    size = width, height = 800, 600
+    size = width, height = 600, 600
     screen = pygame.display.set_mode(size)
 
     running = True
@@ -24,6 +25,10 @@ if __name__ == '__main__':
     fps = 60
 
     game_objects = []
+
+    field = Field()
+    game_objects.append(field)
+    field.generate_map()
 
     player = Player()
     game_objects.append(player)
@@ -35,14 +40,14 @@ if __name__ == '__main__':
 
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_LEFT]:
-            player.move_left()
-        if keys[pygame.K_RIGHT]:
-            player.move_right()
-        if keys[pygame.K_UP]:
-            player.move_up()
-        if keys[pygame.K_DOWN]:
-            player.move_down()
+        if keys[pygame.K_LEFT] or keys[pygame.K_a]:
+            player.move_left(field)
+        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+            player.move_right(field)
+        if keys[pygame.K_UP] or keys[pygame.K_w]:
+            player.move_up(field)
+        if keys[pygame.K_DOWN] or keys[pygame.K_s]:
+            player.move_down(field)
 
         update(game_objects)
         draw(screen, game_objects)
