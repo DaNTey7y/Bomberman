@@ -1,4 +1,5 @@
 import pygame
+from bomb import Bomb
 
 
 class Player:
@@ -27,6 +28,9 @@ class Player:
                            pygame.transform.scale(pygame.image.load('images/pr2.png'), (50, 50))]
         self.current_animation = self.walk_left
         self.anim_counter = 0
+
+        self.bomb_limit = 1
+        self.bombs_planted = 0
 
         self.frame = None
         self.rect = None
@@ -124,6 +128,11 @@ class Player:
                     self.pos_y += self.speed
                     self.pos_x -= self.speed
         self.sync_with_field(field)
+
+    def plant_bomb(self, field):
+        row, col = field.get_position((self.pos_x + 24, self.pos_y + 24))
+        bomb = Bomb(row, col)
+        return bomb
 
     def sync_with_field(self, field):
         cur_pos = field.get_position((self.pos_x + 24, self.pos_y + 24))

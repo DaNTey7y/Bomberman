@@ -7,7 +7,6 @@ class Enemy:
         self.pos_x, self.pos_y = pos_x, pos_y
         self.field = field
         self.field_pos = self.field.get_position((self.pos_x + 24, self.pos_y + 24))
-        self.alive = True
         self.direction = choice(range(4))
         self.speed = 2
         self.left_flip_anim = [pygame.transform.scale(pygame.image.load('images/el0.png'), (50, 50)),
@@ -16,11 +15,10 @@ class Enemy:
                                pygame.transform.scale(pygame.image.load('images/el1.png'), (50, 50))]
         self.current_anim = self.left_flip_anim
         self.anim_counter = 0
+        self.alive = True
 
         self.frame = None
         self.rect = None
-
-        self.alive = True
 
     def get_pos(self):
         return self.pos_x, self.pos_y
@@ -72,10 +70,15 @@ class Enemy:
                 self.direction = choice((0, 1, 2))
         self.sync_with_field()
 
+    def get_field_pos(self):
+        return self.field_pos
+
+    def is_dead(self):
+        return self.alive
+
     def die(self):
         self.field.field[self.field_pos[0]][self.field_pos[1]] = 0
         self.alive = False
-        return False
 
     def update(self):
         if self.anim_counter >= 64:

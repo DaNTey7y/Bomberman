@@ -2,6 +2,7 @@ import pygame
 from player import Player
 from field import Field
 from enemys import Enemy
+# from explosion import Explosion
 
 
 def update(objects):
@@ -34,6 +35,8 @@ if __name__ == '__main__':
     player = Player()
     game_objects.append(player)
 
+    lose = False
+
     for i in range(4):
         response = field.spawn_enemy()
         while response[0] is False:
@@ -57,14 +60,45 @@ if __name__ == '__main__':
             player.move_up(field)
         if keys[pygame.K_DOWN] or keys[pygame.K_s]:
             player.move_down(field)
+        # if keys[pygame.K_SPACE]:
+        #     game_objects.append(player.plant_bomb(field))
 
         for obj in game_objects:
+            #enemys = []
             if obj.__class__.__name__ == 'Enemy':
+                # if obj.is_dead():
+                #     game_objects.remove(obj)
+                # else:
+                #     if abs(player.pos_x - obj.pos_x) < 30 and abs(player.pos_y - obj.pos_y) < 30:
+                #         player.die()
+                #     enemys.append(obj)
                 if abs(player.pos_x - obj.pos_x) < 30 and abs(player.pos_y - obj.pos_y) < 30:
                     player.die()
-
-        update(game_objects)
-        draw(screen, game_objects)
+                    lose = True
+                #enemys.append(obj)
+            # if obj.__class__.__name__ == 'Bomb':
+            #     if obj.is_blown():
+            #         explosion_center = obj.get_row_col()
+            #         game_objects.remove(obj)
+                    # explos = Explosion(field, enemys, explosion_center)
+                    # game_objects.append(explos)
+            # if obj.__class__.__name__ == 'Explosion':
+            #     if obj.is_ended():
+            #         game_objects.remove(obj)
+        if not lose:
+            update(game_objects)
+            draw(screen, game_objects)
+        else:
+            screen.fill((0, 0, 0))
+            font = pygame.font.Font(None, 50)
+            text = font.render("Вы проиграли", True, (255, 0, 0))
+            text_x = width // 2 - text.get_width() // 2
+            text_y = height // 2 - text.get_height() // 2
+            text_w = text.get_width()
+            text_h = text.get_height()
+            screen.blit(text, (text_x, text_y))
+            pygame.draw.rect(screen, (255, 0, 0), (text_x - 10, text_y - 10,
+                                                   text_w + 20, text_h + 20), 1)
 
         clock.tick(fps)
         pygame.display.flip()
