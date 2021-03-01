@@ -6,10 +6,8 @@ class Player:
         # Задаю параметры игрока
         self.pos_x = 50
         self.pos_y = 50
-        self.field_pos = (1, 1)
-        self.color = (255, 0, 0)
-        self.radius = 20
         self.speed = 2.5
+        self.field_pos = (1, 1)
 
         self.walk_up = [pygame.transform.scale(pygame.image.load('images/pu0.png'), (50, 50)),
                         pygame.transform.scale(pygame.image.load('images/pu1.png'), (50, 50)),
@@ -135,8 +133,14 @@ class Player:
                 field.field[cur_pos[1]][cur_pos[0]] = 3
                 self.field_pos = cur_pos
 
+    def die(self):
+        self.alive = False
+
     # обновляет состояние игрока
     def update(self):
+        if self.alive is False:
+            exit()
+
         if self.anim_counter >= 16:
             self.anim_counter = 0
 

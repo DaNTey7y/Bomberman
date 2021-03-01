@@ -1,5 +1,5 @@
 import pygame
-from random import randint
+from random import randint, choice
 
 
 class Field:
@@ -27,6 +27,19 @@ class Field:
                     else:
                         if randint(0, 100) >= 79:
                             self.field[row][col] = 2
+
+    def spawn_enemy(self):
+        row, col = choice(range(12)), choice(range(12))
+        if str(self.field[row][col]) not in ('1', '2', '3', '4'):
+            if (row == 1 and col == 2) or (row == 2 and col == 1):
+                pass
+            else:
+                if randint(0, 100) >= 99:
+                    self.field[row][col] = 4
+                    return True, row, col
+                return False, row, col
+            return False, row, col
+        return False, row, col
 
     def get_position(self, pos):
         x, y = 0, 0

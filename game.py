@@ -1,6 +1,7 @@
 import pygame
 from player import Player
 from field import Field
+from enemys import Enemy
 
 
 def update(objects):
@@ -33,6 +34,14 @@ if __name__ == '__main__':
     player = Player()
     game_objects.append(player)
 
+    for i in range(4):
+        response = field.spawn_enemy()
+        while response[0] is False:
+            response = field.spawn_enemy()
+        x, y = response[1] * 50, response[2] * 50
+        enemy = Enemy(field, x, y)
+        game_objects.append(enemy)
+
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -48,6 +57,11 @@ if __name__ == '__main__':
             player.move_up(field)
         if keys[pygame.K_DOWN] or keys[pygame.K_s]:
             player.move_down(field)
+
+        for obj in game_objects:
+            if obj.__class__.__name__ == 'Enemy':
+                if abs(player.pos_x - obj.pos_x) < 30 and abs(player.pos_y - obj.pos_y) < 30:
+                    player.die()
 
         update(game_objects)
         draw(screen, game_objects)
