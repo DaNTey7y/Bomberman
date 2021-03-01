@@ -17,7 +17,7 @@ def draw(surface, objects):
 if __name__ == '__main__':
     pygame.init()
     pygame.display.set_caption('Bomberman')
-    size = width, height = 600, 600
+    size = width, height = 650, 600
     screen = pygame.display.set_mode(size)
 
     running = True

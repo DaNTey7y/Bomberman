@@ -6,6 +6,7 @@ class Player:
         # Задаю параметры игрока
         self.pos_x = 50
         self.pos_y = 50
+        self.field_pos = (1, 1)
         self.color = (255, 0, 0)
         self.radius = 20
         self.speed = 2.5
@@ -61,6 +62,7 @@ class Player:
                 if self.pos_y + 49 > ((50 * next_cell_1[1] - 1) + 24):
                     self.pos_y += self.speed
                     self.pos_x += self.speed
+        self.sync_with_field(field)
 
     def move_left(self, field):
         self.current_animation = self.walk_left
@@ -81,6 +83,7 @@ class Player:
                 if self.pos_y + 49 > ((50 * next_cell_1[1] - 1) + 24):
                     self.pos_y += self.speed
                     self.pos_x -= self.speed
+        self.sync_with_field(field)
 
     def move_up(self, field):
         self.current_animation = self.walk_up
@@ -101,6 +104,7 @@ class Player:
                 if self.pos_x < (50 * (next_cell_0[0] + 1)) - 24:
                     self.pos_y -= self.speed
                     self.pos_x -= self.speed
+        self.sync_with_field(field)
 
     def move_down(self, field):
         self.current_animation = self.walk_down
@@ -121,6 +125,15 @@ class Player:
                 if self.pos_x < (50 * (next_cell_0[0] + 1)) - 22:
                     self.pos_y += self.speed
                     self.pos_x -= self.speed
+        self.sync_with_field(field)
+
+    def sync_with_field(self, field):
+        cur_pos = field.get_position((self.pos_x + 24, self.pos_y + 24))
+        if self.field_pos != cur_pos:
+            if field.field[cur_pos[1]][cur_pos[0]] == 0:
+                field.field[self.field_pos[1]][self.field_pos[0]] = 0
+                field.field[cur_pos[1]][cur_pos[0]] = 3
+                self.field_pos = cur_pos
 
     # обновляет состояние игрока
     def update(self):
