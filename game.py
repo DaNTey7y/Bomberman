@@ -60,8 +60,8 @@ if __name__ == '__main__':
             player.move_up(field)
         if keys[pygame.K_DOWN] or keys[pygame.K_s]:
             player.move_down(field)
-        # if keys[pygame.K_SPACE]:
-        #     game_objects.append(player.plant_bomb(field))
+        if keys[pygame.K_SPACE]:
+            game_objects.append(player.plant_bomb(field))
 
         for obj in game_objects:
             #enemys = []
@@ -76,10 +76,10 @@ if __name__ == '__main__':
                     player.die()
                     lose = True
                 #enemys.append(obj)
-            # if obj.__class__.__name__ == 'Bomb':
-            #     if obj.is_blown():
-            #         explosion_center = obj.get_row_col()
-            #         game_objects.remove(obj)
+            if obj.__class__.__name__ == 'Bomb':
+                if obj.is_blown():
+                    explosion_center = obj.get_row_col()
+                    game_objects.remove(obj)
                     # explos = Explosion(field, enemys, explosion_center)
                     # game_objects.append(explos)
             # if obj.__class__.__name__ == 'Explosion':
