@@ -50,6 +50,17 @@ class Player:
         if str(field.field[next_cell_0[1]][next_cell_0[0]]) not in ('1', '2') \
                 and str(field.field[next_cell_1[1]][next_cell_1[0]]) not in ('1', '2'):
             self.pos_x += self.speed
+        else:
+            if str(field.field[next_cell_0[1]][next_cell_0[0]]) not in ('1', '2') and \
+                    str(field.field[next_cell_1[1]][next_cell_1[0]]) in ('1', '2'):
+                if self.pos_y < ((50 * next_cell_1[1] + 1) - 28):
+                    self.pos_y -= self.speed
+                    self.pos_x += self.speed
+            elif str(field.field[next_cell_1[1]][next_cell_1[0]]) not in ('1', '2') and \
+                    str(field.field[next_cell_0[1]][next_cell_0[0]]) in ('1', '2'):
+                if self.pos_y + 49 > ((50 * next_cell_1[1] - 1) + 24):
+                    self.pos_y += self.speed
+                    self.pos_x += self.speed
 
     def move_left(self, field):
         self.current_animation = self.walk_left
@@ -59,6 +70,17 @@ class Player:
         if str(field.field[next_cell_0[1]][next_cell_0[0]]) not in ('1', '2') \
                 and str(field.field[next_cell_1[1]][next_cell_1[0]]) not in ('1', '2'):
             self.pos_x -= self.speed
+        else:
+            if str(field.field[next_cell_0[1]][next_cell_0[0]]) not in ('1', '2') and \
+                    str(field.field[next_cell_1[1]][next_cell_1[0]]) in ('1', '2'):
+                if self.pos_y < ((50 * next_cell_1[1] + 1) - 28):
+                    self.pos_y -= self.speed
+                    self.pos_x -= self.speed
+            elif str(field.field[next_cell_1[1]][next_cell_1[0]]) not in ('1', '2') and \
+                    str(field.field[next_cell_0[1]][next_cell_0[0]]) in ('1', '2'):
+                if self.pos_y + 49 > ((50 * next_cell_1[1] - 1) + 24):
+                    self.pos_y += self.speed
+                    self.pos_x -= self.speed
 
     def move_up(self, field):
         self.current_animation = self.walk_up
@@ -68,6 +90,17 @@ class Player:
         if str(field.field[next_cell_0[1]][next_cell_0[0]]) not in ('1', '2') \
                 and str(field.field[next_cell_1[1]][next_cell_1[0]]) not in ('1', '2'):
             self.pos_y -= self.speed
+        else:
+            if str(field.field[next_cell_0[1]][next_cell_0[0]]) in ('1', '2') and \
+                    str(field.field[next_cell_1[1]][next_cell_1[0]]) not in ('1', '2'):
+                if self.pos_x > (50 * next_cell_1[0] - 30):
+                    self.pos_y -= self.speed
+                    self.pos_x += self.speed
+            elif str(field.field[next_cell_1[1]][next_cell_1[0]]) in ('1', '2') and \
+                    str(field.field[next_cell_0[1]][next_cell_0[0]]) not in ('1', '2'):
+                if self.pos_x < (50 * (next_cell_0[0] + 1)) - 24:
+                    self.pos_y -= self.speed
+                    self.pos_x -= self.speed
 
     def move_down(self, field):
         self.current_animation = self.walk_down
@@ -77,6 +110,17 @@ class Player:
         if str(field.field[next_cell_0[1]][next_cell_0[0]]) not in ('1', '2') \
                 and str(field.field[next_cell_1[1]][next_cell_1[0]]) not in ('1', '2'):
             self.pos_y += self.speed
+        else:
+            if str(field.field[next_cell_0[1]][next_cell_0[0]]) in ('1', '2') and \
+                    str(field.field[next_cell_1[1]][next_cell_1[0]]) not in ('1', '2'):
+                if self.pos_x > (50 * next_cell_1[0] - 30):
+                    self.pos_y += self.speed
+                    self.pos_x += self.speed
+            elif str(field.field[next_cell_1[1]][next_cell_1[0]]) in ('1', '2') and \
+                    str(field.field[next_cell_0[1]][next_cell_0[0]]) not in ('1', '2'):
+                if self.pos_x < (50 * (next_cell_0[0] + 1)) - 22:
+                    self.pos_y += self.speed
+                    self.pos_x -= self.speed
 
     # обновляет состояние игрока
     def update(self):
