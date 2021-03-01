@@ -22,8 +22,11 @@ class Field:
         for row in range(len(self.field)):
             for col in range(len(self.field[row])):
                 if str(self.field[row][col]) not in ('1', '3'):
-                    if randint(0, 100) >= 79:
-                        self.field[row][col] = 2
+                    if (row == 1 and col == 2) or (row == 2 and col == 1):
+                        pass
+                    else:
+                        if randint(0, 100) >= 79:
+                            self.field[row][col] = 2
 
     def get_position(self, pos):
         x, y = 0, 0
